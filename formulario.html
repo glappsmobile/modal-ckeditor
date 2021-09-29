@@ -1,0 +1,105 @@
+{% extends "dashboard.html" %}
+{% block corpo %}
+
+<div id="ajaxResposta"></div>
+
+
+<form id="formularioAjax" action="{% if dados.id %}{{url('admin/noticias/editar/'~dados.id)}}{% else %}{{url('admin/noticias/cadastrar')}}{% endif %}"  method="post" enctype="multipart/form-data">
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="capa" class="form-label">Capa</label>
+                <input type="file" name="capa" id="capa" accept=".jpg, .jpeg, .png" class="form-control capa"/>
+                <div class="progress mt-1">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Título<sup class="text-danger">*</sup></label>
+                <input type="text" name="titulo" id="titulo" maxlength="255" value="{{dados.titulo}}" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="texto" class="form-label">Texto<sup class="text-danger">*</sup></label>
+                <textarea name="texto" id="texto" class="ckeditor form-control" rows="5">{{dados.texto}}</textarea>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <label for="secretaria_id" class="form-label">Compartilhar com Secretária</label>
+                    <select class="form-select mb-3" name="secretaria_id" id="secretaria_id">
+                        <option value=""> Selecione</option>
+                        {% for secretaria in secretarias %}
+                        <option value="{{ secretaria.id }}" {% if dados.secretaria_id == secretaria.id %}selected{% endif %}>
+                            {{ secretaria.titulo }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label for="autor" class="form-label">Autor<sup class="text-danger">*</sup></label>
+                        <input type="text" name="autor" id="autor" maxlength="50" value="{% if dados.autor %}{{dados.autor}}{% else %}PMNX{% endif %}" class="form-control">
+                    </div>
+
+                </div>                
+
+                <div class="col-md-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select class="form-select mb-3" name="status" id="status"  required>
+                        {% if dados.id %}
+                        <option value="1" {% if dados.status == 1 %}selected{% endif %}>Ativo</option>
+                        <option value="0" {% if dados.status == 0 %}selected{% endif %}>Inativo</option>
+                        {% else %}
+                        <option value="1" selected>Ativo</option>
+                        <option value="0">Inativo</option>
+                        {% endif %}
+                    </select>     
+                </div>
+
+                <div class="col-md-9">
+                    <label for="arquivo" class="form-label">Anexar Arquivo</label>
+                    <input type="file" name="arquivo" id="arquivo" accept=".zip, .rar, .pdf, .docx, .doc" class="form-control"/>
+                    <div class="progress mt-1">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" id="enviar" class="botao">
+        {% if dados.id %}Atualizar{% else %}Cadastrar{% endif %}
+    </button>
+</form>
+
+{% if arquivos %}
+<div class="card mt-3">
+    <div class="card-header fw-bold">
+        Arquivos Anexados
+    </div>
+    <ul class="list-group list-group-flush">
+        {% for arquivo in arquivos %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="{{url('uploads/arquivos/'~arquivo.arquivo)}}" target="_blank">
+                {{ iconeArquivo(arquivo.arquivo)|raw }} {{ arquivo.nome }}
+            </a>
+            <div class="acao">
+                <a href="{{url('admin/noticias/deletar/arquivo/'~arquivo.id)}}" 
+                   data-bs-toggle="tooltip" 
+                   title="Deletar Arquivo"
+                   data-confirm="Você tem certeza que quer excluir esse arquivo? Essa ação não pode ser desfeita.">
+                    <i class="fas fa-trash-alt deletar"></i>
+                </a> 
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{% endblock %}
