@@ -21,6 +21,21 @@
             </div>
 
             <div class="mb-3">
+                <label for="titulo" class="form-label">Telefone<sup class="text-danger">*</sup></label>
+                <input type="text" name="telefone" id="telefone" maxlength="255" class="phone form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="titulo" class="form-label">CPF<sup class="text-danger">*</sup></label>
+                <input type="text" name="cpf" id="cpf" maxlength="255" class="cpf form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="titulo" class="form-label">Data<sup class="text-danger">*</sup></label>
+                <input type="text" name="data" id="data" maxlength="255" class="date form-control">
+            </div>
+
+            <div class="mb-3">
                 <label for="texto" class="form-label">Texto<sup class="text-danger">*</sup></label>
                 <textarea name="texto" id="texto" class="ckeditor form-control" rows="5">{{dados.texto}}</textarea>
             </div>
