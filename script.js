@@ -28,8 +28,10 @@ const formularioAjax = () => {
 
     $("#formularioAjax").submit(function (event) {
         event.preventDefault();
+        updateEditors();
 
         var carregando = $(".ajaxLoading");
+        console.log($(this.id).serializeArray());
 
         $.ajax({
             xhr: function () {
@@ -145,5 +147,12 @@ const installJqueryMask = (modalId) => {
     });
 }
 
+const updateEditors = () => {
+    //ATUALIZA O VALOR DE TODOS CKEditors
+    const instances = Object.keys(CKEDITOR.instances);
+    instances.forEach((instance) => {
+        CKEDITOR.instances[instance].updateElement();
+    })
+} 
 
 abrirModal();
