@@ -98,48 +98,51 @@ const formularioAjax = () => {
 
 const installPlugins = (modal) => {
 
-    //ADICIONA O EDITOR NOS ELEMENTOS COM CLASSE "ckeditor"
+    //ADICIONA O CK EDITOR NOS ELEMENTOS COM CLASSE "ckeditor"
     modal.querySelectorAll('.ckeditor').forEach((elemento) => {
         CKEDITOR.replace(elemento.id);
     });
 
-    installJqueryMask();
+    installJqueryMask(modal.id);
 }
 
-const installJqueryMask = () => {
-    $('.date').mask('00/00/0000');
-    $('.time').mask('00:00:00');
-    $('.date_time').mask('00/00/0000 00:00:00');
-    $('.cep').mask('00000-000');
-    $('.phone').mask('0000-0000');
-    $('.phone_with_ddd').mask('(00) 0000-0000');
-    $('.phone_us').mask('(000) 000-0000');
-    $('.mixed').mask('AAA 000-S0S');
-    $('.cpf').mask('000.000.000-00', { reverse: true });
-    $('.cnpj').mask('00.000.000/0000-00', { reverse: true });
-    $('.money').mask('000.000.000.000.000,00', { reverse: true });
-    $('.money2').mask("#.##0,00", { reverse: true });
-    $('.ip_address').mask('0ZZ.0ZZ.0ZZ.0ZZ', {
-        translation: {
-            'Z': {
-                pattern: /[0-9]/, optional: true
+const installJqueryMask = (modalId) => {
+    const masks = {
+        date: { pattern: '00/00/0000' },
+        time: { pattern: '00:00:00' },
+        date_time: { pattern: '00/00/0000 00:00:00' },
+        cep: { pattern: '00000-000' },
+        phone: { pattern: '0000-0000' },
+        phone_with_ddd: { pattern: '(00) 0000-0000' },
+        phone_us: { pattern: '(000) 000-0000' },
+        mixed: { pattern: 'AAA 000-S0S' },
+        cpf: { pattern: '000.000.000-00', config: { reverse: true } },
+        cnpj: { pattern: '00.000.000/0000-00', config: { reverse: true } },
+        money: { pattern: '000.000.000.000.000,00', config: { reverse: true } },
+        money2: { pattern: '#.##0,00', config: { reverse: true } },
+        ip_address: { pattern: '099.099.099.099' },
+        percent: { pattern: '00/00/0000', config: { reverse: true } },
+        'clear-if-not-match': { pattern: '00/00/0000', config: { clearIfNotMatch: true } },
+        placeholder: { pattern: '00/00/0000', config: { placeholder: "__/__/____" } },
+        fallback: {
+            pattern: '00/00/0000', 
+            config: {
+                translation: {
+                    'r': {
+                        pattern: /[\/]/,
+                        fallback: '/'
+                    },
+                    placeholder: "__/__/____"
+                }
             }
-        }
+        },
+        selectonfocus: { pattern: '00/00/0000', config: { selectOnFocus: true } },
+    }
+
+    Object.keys(masks).forEach((maskKey) => {
+        const mask = masks[maskKey];
+        $(`#${modalId} .${maskKey}`).mask(mask.pattern, mask.config);
     });
-    $('.ip_address').mask('099.099.099.099');
-    $('.percent').mask('##0,00%', { reverse: true });
-    $('.clear-if-not-match').mask("00/00/0000", { clearIfNotMatch: true });
-    $('.placeholder').mask("00/00/0000", { placeholder: "__/__/____" });
-    $('.fallback').mask("00r00r0000", {
-        translation: {
-            'r': {
-                pattern: /[\/]/,
-                fallback: '/'
-            },
-            placeholder: "__/__/____"
-        }
-    });
-    $('.selectonfocus').mask("00/00/0000", { selectOnFocus: true });
 }
 
 
