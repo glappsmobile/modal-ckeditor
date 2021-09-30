@@ -149,10 +149,9 @@ const installJqueryMask = (modalId) => {
 
 const updateEditors = () => {
     //ATUALIZA O VALOR DE TODOS CKEditors
-    const instances = Object.keys(CKEDITOR.instances);
-    instances.forEach((instance) => {
+    Object.keys(CKEDITOR.instances).forEach((instance) => {
         CKEDITOR.instances[instance].updateElement();
-    })
+    });
 } 
 
 abrirModal();
