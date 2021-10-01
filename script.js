@@ -149,9 +149,19 @@ const installJqueryMask = (modalId) => {
 
 const updateEditors = () => {
     //ATUALIZA O VALOR DE TODOS CKEditors
-    Object.keys(CKEDITOR.instances).forEach((instance) => {
-        CKEDITOR.instances[instance].updateElement();
+    Object.keys(CKEDITOR.instances).forEach((instanceName) => {
+        CKEDITOR.instances[instanceName].updateElement();
     });
 } 
 
 abrirModal();
+
+const removeModalFocus = () => {
+    $('#modal').modal({
+        focus: false
+    });
+}
+
+$(document).ready(function () {
+    removeModalFocus();
+});
